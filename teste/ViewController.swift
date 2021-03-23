@@ -9,6 +9,7 @@ import UIKit
 
 class ViewController: UIViewController {
     
+    
     var number: [Numbers] = []
     var services = Service()
     var mult: Double = 0.0
@@ -26,6 +27,7 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         lbResult.isHidden = true
+        self.showSpinner()
         
         loadData()
     }
@@ -51,6 +53,7 @@ class ViewController: UIViewController {
                 self.number = numbers!
                 if let a = self.number.first?.myArray.first , let b = self.number.last?.myArray.last {
                     DispatchQueue.main.async {
+                        self.removeSpinner()
                         self.tfFirstNumber.text = "\(a)"
                         self.tfLastNumber.text = "\(b)"
                     }
@@ -69,3 +72,22 @@ class ViewController: UIViewController {
     
 }
 
+fileprivate var aView : UIView?
+extension UIViewController {
+    
+    func showSpinner() {
+        aView = UIView(frame: self.view.bounds)
+        aView?.backgroundColor = UIColor.init(red: 0.5, green: 0.5, blue: 0.5, alpha: 0.5)
+        
+        let ai = UIActivityIndicatorView(style: .large)
+        ai.center = aView!.center
+        ai.startAnimating()
+        aView?.addSubview(ai)
+        self.view.addSubview(aView!)
+    }
+    
+    func removeSpinner() {
+        aView?.removeFromSuperview()
+        aView = nil
+    }
+}
